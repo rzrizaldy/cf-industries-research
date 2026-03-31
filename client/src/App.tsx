@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Switch, Route, Router, Link, useLocation } from "wouter";
 import { useHashLocation } from "wouter/use-hash-location";
 import { queryClient } from "./lib/queryClient";
@@ -107,6 +108,210 @@ function TrendIcon({ trend }: { trend: "up" | "down" | "flat" }) {
   if (trend === "up") return <TrendingUp className="w-3.5 h-3.5 text-green-600 inline" />;
   if (trend === "down") return <TrendingDown className="w-3.5 h-3.5 text-red-600 inline" />;
   return <Minus className="w-3.5 h-3.5 text-gray-500 inline" />;
+}
+
+// ─── Fun presets for the investment simulator ────────────────────────
+const investPresets = [
+  { label: "1 iPhone 17", value: 1199, emoji: "📱" },
+  { label: "1 PS6", value: 499, emoji: "🎮" },
+  { label: "1 Year Netflix", value: 192, emoji: "🍿" },
+  { label: "1 Jordan Retros", value: 200, emoji: "👟" },
+  { label: "Summer Job Savings", value: 3000, emoji: "☀️" },
+  { label: "Birthday Money", value: 500, emoji: "🎂" },
+  { label: "College Textbooks", value: 800, emoji: "📚" },
+  { label: "Custom Amount", value: 0, emoji: "💵" },
+];
+
+const scenarios = [
+  { name: "Bear", subtitle: "Crisis ends fast", prob: 20, returnPct: -20, color: "#FF3D8F", emoji: "😰" },
+  { name: "Base", subtitle: "Partial closure continues", prob: 45, returnPct: 25, color: "#FF5500", emoji: "📊" },
+  { name: "Bull", subtitle: "Full closure extended", prob: 25, returnPct: 55, color: "#1ABC9C", emoji: "🚀" },
+  { name: "Moonshot", subtitle: "Dual chokepoint crisis", prob: 10, returnPct: 90, color: "#2B4CFF", emoji: "🌙" },
+];
+
+function InvestmentSimulator() {
+  const [amount, setAmount] = useState(1199);
+  const [activePreset, setActivePreset] = useState(0);
+  const [showCustom, setShowCustom] = useState(false);
+  const [years, setYears] = useState(1);
+
+  const handlePreset = (idx: number) => {
+    setActivePreset(idx);
+    if (idx === investPresets.length - 1) {
+      setShowCustom(true);
+    } else {
+      setShowCustom(false);
+      setAmount(investPresets[idx].value);
+    }
+  };
+
+  // Expected value = probability-weighted average
+  const expectedReturn = scenarios.reduce((sum, s) => sum + (s.prob / 100) * s.returnPct, 0);
+  const expectedValue = amount * (1 + expectedReturn / 100);
+  const worstCase = amount * (1 + scenarios[0].returnPct / 100);
+  const bestCase = amount * (1 + scenarios[3].returnPct / 100);
+
+  // Compound for multi-year (simplified — assumes same annual return)
+  const compoundedEV = amount * Math.pow(1 + expectedReturn / 100, years);
+  const compoundedBest = amount * Math.pow(1 + scenarios[3].returnPct / 100, years);
+  const compoundedWorst = amount * Math.pow(1 + scenarios[0].returnPct / 100, years);
+
+  // Fun equivalents for the expected value gain
+  const gain = compoundedEV - amount;
+  const funEquivalents = [
+    { item: "Chipotle Burritos", price: 12, emoji: "🌯" },
+    { item: "Spotify Months", price: 12, emoji: "🎵" },
+    { item: "Movie Tickets", price: 15, emoji: "🎬" },
+    { item: "Boba Teas", price: 7, emoji: "🧋" },
+    { item: "Uber Rides", price: 18, emoji: "🚗" },
+  ];
+
+  return (
+    <Panel>
+      <div className="panel-header mb-4 -m-5 mb-5 px-5 py-3">🎮 INVESTMENT SIMULATOR — MAKE IT REAL</div>
+
+      {/* Step 1: Pick what you're investing */}
+      <div className="space-y-5">
+        <div>
+          <p className="text-sm font-bold mb-3">💡 Pick something you know the value of. What would you invest?</p>
+          <div className="flex flex-wrap gap-2">
+            {investPresets.map((p, i) => (
+              <button
+                key={i}
+                data-testid={`preset-${i}`}
+                onClick={() => handlePreset(i)}
+                className={`px-3 py-2 text-xs font-bold border-[3px] border-[#1A1A1A] transition-colors ${
+                  activePreset === i
+                    ? "bg-[#2B4CFF] text-white"
+                    : "bg-white text-[#1A1A1A] hover:bg-[#F2F0E9]"
+                }`}
+              >
+                {p.emoji} {p.label} {p.value > 0 && `($${p.value.toLocaleString()})`}
+              </button>
+            ))}
+          </div>
+          {showCustom && (
+            <div className="mt-3 flex items-center gap-2">
+              <span className="text-sm font-bold">$</span>
+              <input
+                type="number"
+                data-testid="custom-amount"
+                value={amount}
+                onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
+                className="border-[3px] border-[#1A1A1A] px-3 py-2 text-sm font-mono w-40 bg-white"
+                placeholder="Enter amount"
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Year selector */}
+        <div>
+          <p className="text-sm font-bold mb-2">⏰ How long would you hold?</p>
+          <div className="flex gap-2">
+            {[1, 2, 3, 5].map((y) => (
+              <button
+                key={y}
+                data-testid={`year-${y}`}
+                onClick={() => setYears(y)}
+                className={`px-4 py-2 text-xs font-bold border-[3px] border-[#1A1A1A] transition-colors ${
+                  years === y ? "bg-[#FF5500] text-white" : "bg-white text-[#1A1A1A] hover:bg-[#F2F0E9]"
+                }`}
+              >
+                {y} {y === 1 ? "YEAR" : "YEARS"}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Results display */}
+        <div className="border-[3px] border-[#1A1A1A] bg-[#FFF8F0]">
+          <div className="bg-[#1A1A1A] text-white px-4 py-2 text-xs font-bold">📈 YOUR INVESTMENT: <span className="metric-highlight text-xs">${amount.toLocaleString()}</span> FOR {years} {years === 1 ? "YEAR" : "YEARS"}</div>
+          <div className="p-4 space-y-4">
+            {/* Expected Value hero */}
+            <div className="text-center py-3">
+              <div className="text-xs font-bold text-gray-500 tracking-wider mb-1">EXPECTED VALUE (PROBABILITY-WEIGHTED)</div>
+              <div className="text-3xl font-bold">
+                <span className="metric-green text-2xl">${Math.round(compoundedEV).toLocaleString()}</span>
+              </div>
+              <div className="text-sm mt-1">
+                That's <span className={`font-bold ${gain >= 0 ? "text-green-600" : "text-red-600"}`}>{gain >= 0 ? "+" : ""}${Math.round(gain).toLocaleString()}</span> ({gain >= 0 ? "+" : ""}{((compoundedEV / amount - 1) * 100).toFixed(1)}%)
+              </div>
+              <div className="text-xs text-gray-500 mt-1">💡 "Expected value" = what you'd get ON AVERAGE if this played out 1000 times</div>
+            </div>
+
+            {/* Scenario breakdown */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              {scenarios.map((s, i) => {
+                const val = amount * Math.pow(1 + s.returnPct / 100, years);
+                const diff = val - amount;
+                return (
+                  <div key={i} className="border-[2px] border-[#1A1A1A] p-3 text-center" data-testid={`scenario-${s.name}`}>
+                    <div className="text-lg">{s.emoji}</div>
+                    <div className="text-xs font-bold" style={{ color: s.color }}>{s.name.toUpperCase()}</div>
+                    <div className="text-[0.65rem] text-gray-500 mb-2">{s.subtitle}</div>
+                    <div className="text-sm font-bold mb-1">${Math.round(val).toLocaleString()}</div>
+                    <div className={`text-xs font-bold ${diff >= 0 ? "text-green-600" : "text-red-600"}`}>
+                      {diff >= 0 ? "+" : ""}${Math.round(diff).toLocaleString()}
+                    </div>
+                    <div className="mt-2">
+                      <div className="text-[0.6rem] text-gray-400 tracking-wider">{s.prob}% CHANCE</div>
+                      <div className="h-1.5 bg-gray-200 mt-1">
+                        <div className="h-full" style={{ width: `${s.prob}%`, backgroundColor: s.color }} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Fun gain equivalents */}
+            {gain > 0 && (
+              <div className="border-t-[3px] border-[#1A1A1A] pt-4">
+                <p className="text-xs font-bold mb-3">🎉 YOUR EXPECTED PROFIT (${Math.round(gain).toLocaleString()}) COULD BUY YOU:</p>
+                <div className="flex flex-wrap gap-3">
+                  {funEquivalents.map((f, i) => {
+                    const count = Math.floor(gain / f.price);
+                    if (count < 1) return null;
+                    return (
+                      <div key={i} className="border-[2px] border-[#1A1A1A] px-3 py-2 bg-white text-center" data-testid={`fun-${i}`}>
+                        <div className="text-lg">{f.emoji}</div>
+                        <div className="text-lg font-bold">{count.toLocaleString()}</div>
+                        <div className="text-[0.6rem] font-bold tracking-wider">{f.item.toUpperCase()}</div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Risk reminder */}
+            <div className="border-t-[3px] border-[#FF3D8F] pt-4">
+              <p className="text-xs font-bold text-[#FF3D8F] mb-2">⚠️ BUT REMEMBER THE RISK:</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+                <div className="border-[2px] border-[#FF3D8F] p-3 bg-[#FFF0F5]">
+                  <div className="text-[0.65rem] font-bold text-[#FF3D8F] tracking-wider">WORST CASE (20% CHANCE)</div>
+                  <div className="text-lg font-bold">${Math.round(compoundedWorst).toLocaleString()}</div>
+                  <div className="text-xs text-red-600 font-bold">You lose ${Math.round(amount - compoundedWorst).toLocaleString()}</div>
+                </div>
+                <div className="border-[2px] border-[#1A1A1A] p-3 bg-white">
+                  <div className="text-[0.65rem] font-bold tracking-wider">MAX LOSS IF WE USE STOP LOSS</div>
+                  <div className="text-lg font-bold">${Math.round(amount * 0.83).toLocaleString()}</div>
+                  <div className="text-xs text-red-600 font-bold">Limited to -${Math.round(amount * 0.17).toLocaleString()} (-17%)</div>
+                </div>
+                <div className="border-[2px] border-[#1ABC9C] p-3 bg-[#F0FFF8]">
+                  <div className="text-[0.65rem] font-bold text-[#1ABC9C] tracking-wider">BEST CASE (10% CHANCE)</div>
+                  <div className="text-lg font-bold">${Math.round(compoundedBest).toLocaleString()}</div>
+                  <div className="text-xs text-green-600 font-bold">You gain +${Math.round(compoundedBest - amount).toLocaleString()}</div>
+                </div>
+              </div>
+              <p className="text-[0.65rem] text-gray-500 mt-3">💡 The stop loss at $108 means even in the worst case, we limit our loss to ~17%. That's the "emergency exit" we talked about. Never invest money you can't afford to lose.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Panel>
+  );
 }
 
 // ═════════════════════════════════════════════════════════════════════
@@ -222,6 +427,10 @@ function TheBigPicture() {
         </table>
         <p className="text-xs text-gray-500 mt-3">💡 Stop loss = the price where we'd sell to limit our losses — like an emergency exit.</p>
       </Panel>
+
+      {/* INVESTMENT SIMULATOR */}
+      <SectionLabel>INVESTMENT_SIMULATOR</SectionLabel>
+      <InvestmentSimulator />
     </PageWrap>
   );
 }
