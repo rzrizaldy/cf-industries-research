@@ -1,16 +1,16 @@
 // All dashboard data — sourced from Phase 1A-E intelligence gathering + finance tools
-// Compiled March 31, 2026
+// Updated April 2, 2026
 
 export const meta = {
   title: "CF Industries (CF)",
   subtitle: "The Fertilizer Shock Trade",
   tagline: "Hormuz Crisis Second-Order Mispricing",
-  date: "March 31, 2026",
-  crisisDay: 32,
+  date: "April 2, 2026",
+  crisisDay: 34,
   position: "LONG",
   targetPrice: 185,
-  currentPrice: 130.53,
-  upsidePct: 42,
+  currentPrice: 134.96,
+  upsidePct: 37,
   stopLoss: 108,
   riskReward: "2.5:1",
   timeframe: "6-12 months",
@@ -18,19 +18,19 @@ export const meta = {
 };
 
 export const criteriaMet = [
-  { name: "Underpriced Tail Risk", met: true, detail: "Analysts rate HOLD at $115.50 avg PT while stock trades at $130.53. Consensus models assume Hormuz reopens by Q2 — prediction markets assign <25% probability by April 15." },
+  { name: "Underpriced Tail Risk", met: true, detail: "Analysts rate HOLD at $115.50 avg PT while stock trades at $134.96. Polymarket gives only 12% chance of Hormuz normalizing by April 30." },
   { name: "Physical Supply Chain Confirmation", met: true, detail: "Qatar fertilizer exports halted (force majeure at 77 mtpa Ras Laffan). 1,900 vessels stranded. Hormuz transits down 95-100% from 138/day baseline." },
-  { name: "Second-Order Beneficiary", met: true, detail: "CF benefits indirectly: cheap US Henry Hub gas ($2.89) vs $15+ global LNG. Competitor supply disrupted. Not a direct Hormuz play." },
-  { name: "Prediction Market Divergence", met: true, detail: "Polymarket: 68% US forces enter Iran by April 30. Hormuz reopening by Apr 15: <25% (Kalshi). NOT reflected in consensus estimates." },
+  { name: "Second-Order Beneficiary", met: true, detail: "CF benefits indirectly: cheap US Henry Hub gas ($2.81) vs $15+ global LNG. Competitor supply disrupted. Not a direct Hormuz play." },
+  { name: "Prediction Market Divergence", met: true, detail: "Polymarket: only 12% chance Hormuz normalizes by April 30. Only 23% chance US escorts ships through. NOT reflected in consensus estimates." },
   { name: "Catalyst Within 3-6 Months", met: true, detail: "April 6 Trump deadline, April 19 sanctions waiver expiry, Q2 planting season demand surge, Q1 2026 earnings report." },
   { name: "Asymmetric Risk/Reward", met: true, detail: "Downside to $108 (17%). Upside to $185+ (42%). 2.5:1 risk-reward ratio." },
 ];
 
 export const thesisBullets = [
   "CF Industries is a second-order beneficiary of Hormuz closure that consensus has failed to price",
-  "US natural gas at $2.89/MMBtu vs. $15+ global LNG = widest cost advantage in a decade",
+  "US natural gas at $2.81/MMBtu vs. $15+ global LNG = widest cost advantage in a decade",
   "Qatar fertilizer exports halted (force majeure) — CF's domestic production fills the gap",
-  "Consensus FY2026E of $30.77 EPS assumes oil normalizes — prediction markets say 52% chance of $120+ WTI",
+  "Consensus FY2026E of $30.77 EPS assumes oil normalizes — WTI just spiked to $112.87, Brent $109",
   "If disruption persists through Q2 planting season, FY2026 EPS could reach $38-50",
 ];
 
@@ -43,26 +43,28 @@ export const oilTimeline = [
   { date: "Mar 21", event: "US bombs Natanz nuclear site", oil: 106, marker: false },
   { date: "Mar 25", event: "Iran rejects peace plan", oil: 107, marker: true },
   { date: "Mar 31", event: "Day 32. B-52 overland missions", oil: 105, marker: false },
+  { date: "Apr 1", event: "Trump: Epic Fury 'nearing completion'. QatarEnergy tanker attacked", oil: 101, marker: true },
+  { date: "Apr 2", event: "Day 34. Oil surges — WTI $113, Brent $109", oil: 109, marker: true },
 ];
 
 export const predictionMarkets = {
   conflict: [
     { market: "US forces enter Iran by Apr 30", prob: 68, volume: "$62M", trend: "up" as const },
-    { market: "US-Iran ceasefire by Apr 30", prob: 34, volume: "$66M", trend: "flat" as const },
+    { market: "US-Iran ceasefire by Apr 30", prob: 34, volume: "$66M", trend: "down" as const },
     { market: "US-Iran ceasefire by Dec 31", prob: 76, volume: "$66M", trend: "up" as const },
-    { market: "Iran regime change by Dec 31", prob: 40, volume: "$5M", trend: "flat" as const },
+    { market: "US escorts ship through Hormuz by Apr 30", prob: 23, volume: "$3M", trend: "down" as const },
   ],
   hormuz: [
-    { market: "Normal traffic by Apr 15", prob: 25, source: "Kalshi", trend: "down" as const },
+    { market: "Normal traffic by Apr 30", prob: 12, source: "Polymarket", trend: "down" as const },
+    { market: "20+ ships transit any day by Apr 30", prob: 42, source: "Polymarket", trend: "flat" as const },
     { market: "Normal traffic by Jun 1", prob: 67, source: "Kalshi", trend: "up" as const },
-    { market: "Normal traffic by Jul 1", prob: 76, source: "Kalshi", trend: "up" as const },
   ],
   oil: [
-    { market: "WTI hits $100 in April", prob: 97, trend: "up" as const },
-    { market: "WTI hits $110 in April", prob: 76, trend: "up" as const },
-    { market: "WTI hits $120 in April", prob: 52, trend: "up" as const },
-    { market: "WTI hits $130 in April", prob: 37, trend: "flat" as const },
-    { market: "WTI hits $150 in April", prob: 17, trend: "flat" as const },
+    { market: "WTI hits $100 in April", prob: 99, trend: "up" as const },
+    { market: "WTI hits $110 in April", prob: 85, trend: "up" as const },
+    { market: "WTI hits $120 in April", prob: 58, trend: "up" as const },
+    { market: "WTI hits $130 in April", prob: 40, trend: "up" as const },
+    { market: "WTI hits $150 in April", prob: 20, trend: "flat" as const },
   ],
   macro: [
     { market: "US recession 2026", prob: 40, source: "Kalshi", trend: "up" as const },
@@ -86,9 +88,9 @@ export const hormuzData = {
 };
 
 export const commodities = [
-  { name: "Brent Crude", ticker: "BZUSD", price: 104.71, change: -2.5, yearLow: 58.39, yearHigh: 119.40 },
-  { name: "WTI Crude", ticker: "CLUSD", price: 101.95, change: -0.9, yearLow: 54.98, yearHigh: 119.48 },
-  { name: "Natural Gas", ticker: "NGUSD", price: 2.89, change: 0.07, yearLow: 2.62, yearHigh: 7.83 },
+  { name: "Brent Crude", ticker: "BZUSD", price: 109.02, change: 7.86, yearLow: 58.39, yearHigh: 119.40 },
+  { name: "WTI Crude", ticker: "CLUSD", price: 112.87, change: 12.75, yearLow: 54.98, yearHigh: 119.48 },
+  { name: "Natural Gas", ticker: "NGUSD", price: 2.81, change: -0.01, yearLow: 2.62, yearHigh: 7.83 },
 ];
 
 export const cfFinancials = {
@@ -142,10 +144,10 @@ export const insiderActivity = [
 ];
 
 export const peers = [
-  { ticker: "CF", name: "CF Industries", price: 130.53, pe: 14.57, marketCap: "20.0B", ebitdaMargin: 46.5, isCurrent: true },
-  { ticker: "NTR", name: "Nutrien", price: 74.94, pe: 16.08, marketCap: "36.3B", ebitdaMargin: 22.0, isCurrent: false },
-  { ticker: "MOS", name: "Mosaic", price: 25.05, pe: 14.73, marketCap: "8.0B", ebitdaMargin: 18.5, isCurrent: false },
-  { ticker: "LXU", name: "LSB Industries", price: 15.12, pe: 44.47, marketCap: "1.1B", ebitdaMargin: 12.0, isCurrent: false },
+  { ticker: "CF", name: "CF Industries", price: 134.96, pe: 15.05, marketCap: "20.7B", ebitdaMargin: 46.5, isCurrent: true },
+  { ticker: "NTR", name: "Nutrien", price: 76.81, pe: 16.48, marketCap: "37.2B", ebitdaMargin: 22.0, isCurrent: false },
+  { ticker: "MOS", name: "Mosaic", price: 26.53, pe: 15.61, marketCap: "8.4B", ebitdaMargin: 18.5, isCurrent: false },
+  { ticker: "LXU", name: "LSB Industries", price: 15.77, pe: 46.37, marketCap: "1.1B", ebitdaMargin: 12.0, isCurrent: false },
 ];
 
 export const variantPerception = [
@@ -163,7 +165,7 @@ export const scenarioAnalysis = [
 ];
 
 export const killConditions = [
-  "Rapid Hormuz reopening (ceasefire + commercial transit restoration by April 15)",
+  "Rapid Hormuz reopening (ceasefire + commercial transit restoration — Polymarket gives only 12% by Apr 30)",
   "US natural gas spikes above $6/MMBtu (erodes cost advantage)",
   "Global recession drives fertilizer demand destruction (-15%+ volumes)",
   "CF-specific operational disruption (plant outage, logistics failure)",
@@ -172,7 +174,7 @@ export const killConditions = [
 export const catalysts = [
   { date: "Apr 6", event: "Trump deadline: Iran deal or intensified strikes", impact: "HIGH" as const },
   { date: "Apr 10", event: "March CPI — first data capturing full oil spike", impact: "MEDIUM" as const },
-  { date: "Apr 15", event: "Hormuz reopening checkpoint (<25% by Kalshi)", impact: "HIGH" as const },
+  { date: "Apr 15", event: "Hormuz reopening checkpoint (12% chance by Polymarket)", impact: "HIGH" as const },
   { date: "Apr 19", event: "OFAC Iran oil sanctions waiver expires", impact: "HIGH" as const },
   { date: "May", event: "CF Q1 2026 earnings — first Hormuz premium quarter", impact: "CRITICAL" as const },
   { date: "May-Jun", event: "Peak N. Hemisphere planting season", impact: "HIGH" as const },

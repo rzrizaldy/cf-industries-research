@@ -339,7 +339,7 @@ function TheBigPicture() {
           <div className="border-l-4 border-[#FF4D00] pl-4 py-2 bg-[#FFF8F0] text-sm leading-relaxed" data-testid="thesis-intro">
             <p className="font-bold mb-2">💡 Think of it this way:</p>
             <p>
-              CF Industries makes fertilizer. They use super cheap American natural gas (<span className="metric-highlight text-sm">{usd(2.89)}</span>) to make it, while their competitors overseas have to pay 5x more (<span className="metric-highlight text-sm">$15+</span>) for energy. Right now, a military conflict has shut down the Strait of Hormuz — a narrow water passage near Iran where ~20% of the world's oil and gas flows. This means CF's competitors literally can't get the energy they need. CF wins BIG.
+              CF Industries makes fertilizer. They use super cheap American natural gas (<span className="metric-highlight text-sm">{usd(2.81)}</span>) to make it, while their competitors overseas have to pay 5x more (<span className="metric-highlight text-sm">$15+</span>) for energy. Right now, a military conflict has shut down the Strait of Hormuz — a narrow water passage near Iran where ~20% of the world's oil and gas flows. This means CF's competitors literally can't get the energy they need. CF wins BIG.
             </p>
           </div>
         </div>
@@ -379,7 +379,7 @@ function TheBigPicture() {
           </li>
           <li className="flex gap-3 items-start">
             <span className="metric-blue text-xs flex-shrink-0">02</span>
-            <span>US natural gas costs <span className="metric-highlight text-xs">{usd(2.89)}</span> vs <span className="metric-highlight text-xs">$15+</span> globally — that's the biggest cost advantage in over a decade.</span>
+            <span>US natural gas costs <span className="metric-highlight text-xs">{usd(2.81)}</span> vs <span className="metric-highlight text-xs">$15+</span> globally — that's the biggest cost advantage in over a decade.</span>
           </li>
           <li className="flex gap-3 items-start">
             <span className="metric-blue text-xs flex-shrink-0">03</span>
@@ -1187,7 +1187,7 @@ function TheTrade() {
 
       {/* Footer */}
       <div className="text-center text-xs text-gray-500 py-4 border-t-[3px] border-[#1A1A1A]" data-testid="footer">
-        Built with Perplexity Computer — March 31, 2026 | This is NOT investment advice. Do your own research!
+        Built with Perplexity Computer — April 2, 2026 | This is NOT investment advice. Do your own research!
       </div>
     </PageWrap>
   );
